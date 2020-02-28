@@ -1,0 +1,26 @@
+  <form [formGroup]="formLogin" class="normal-form center" (ngSubmit)="onSubmit()">
+    <div>
+      <h1>Logeo Encuesta</h1>
+    </div>
+    <mat-grid-list cols="2" rowHeight="300px">
+        <mat-grid-tile>
+            <div>
+                <mat-form-field>
+                  <input matInput formControlName="username" placeholder="Username*">
+                  <mat-error>Este campo es necesario</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                  <input matInput formControlName="password" placeholder="Password*" type="password">
+                    <mat-error>Este campo es necesario</mat-error>
+                </mat-form-field>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div>
+                <div class="button-row">
+                    <button mat-raised-button color="primary" [disabled]="formLogin.invalid" type="submit">Entrar</button>
+                </div>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+</form>

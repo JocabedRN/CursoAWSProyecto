@@ -1,0 +1,99 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Balanceador de la aplicación",
+    "Metadata": {},
+    "Parameters": {
+    },
+    "Mappings": {},
+    "Conditions": {},
+    "Resources": {
+        "balancerAppEncuesta": {
+            "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+            "Properties": {
+                "Name": "balancerAppEncuestaCf",
+                "Subnets": [
+                    {
+                        "Fn::ImportValue" : "infraestructura-subnetPublica1a"
+                    },
+                    {
+                        "Fn::ImportValue" : "infraestructura-subnetPublica1b"
+                    }
+                ],
+                "SecurityGroups": [
+                    {
+                        "Fn::ImportValue" : "infraestructura-sgBalanceador"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "balancerAppEncuesta"
+                    }
+                ]
+            }
+        },
+        "listenerHttpBalancer": {
+            "Type": "AWS::ElasticLoadBalancingV2::Listener",
+            "Properties": {
+                "DefaultActions": [
+                    {
+                        "Type": "forward",
+                        "TargetGroupArn": {
+                            "Ref": "defaultTargetGroup"
+                        }
+                    }
+                ],
+                "LoadBalancerArn": {
+                    "Ref": "balancerAppEncuesta"
+                },
+                "Port": "80",
+                "Protocol": "HTTP"
+            }
+        },
+        "defaultTargetGroup": {
+            "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+            "Properties": {
+                "Name": "defaultCf",
+                "Port": 80,
+                "Protocol": "HTTP",
+                "Targets": [],
+                "VpcId": {
+                    "Fn::ImportValue" : "infraestructura-idVPC"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "defaultCf"
+                    }
+                ]
+            }
+        }
+    },
+    "Outputs": {
+        "URLBalanceador": {
+            "Description": "DNS para acceder al balanceador",
+            "Value": {
+                "Fn::Join": [
+                    "",
+                    [
+                        "http://",
+                        {
+                            "Fn::GetAtt": [
+                                "balancerAppEncuesta",
+                                "DNSName"
+                            ]
+                        }
+                    ]
+                ]
+            },
+            "Export" : { "Name": "infraestructura-urlBalanceador"}
+        },
+        "arnListenerHttpBalancer": {
+            "Description": "ARN del listener HTTP del balanceador",
+            "Value": {
+                "Ref": "listenerHttpBalancer"
+            },
+            "Export" : { "Name": "infraestructura-arnListenerHttpBalancer"}
+        }
+    }
+}

@@ -1,0 +1,157 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "VPC para la app encuesta",
+    "Metadata": {},
+    "Parameters": {},
+    "Mappings": {},
+    "Conditions": {},
+    "Resources": {
+        "vpcEncuesta" : {
+            "Type" : "AWS::EC2::VPC",
+            "Properties" : {
+                "CidrBlock" : "10.0.0.0/16",
+                "EnableDnsSupport" : "true",
+                "EnableDnsHostnames" : "true",
+                "InstanceTenancy" : "default"
+            }
+        },
+        "igEncuesta" : {
+            "Type" : "AWS::EC2::InternetGateway",
+            "Properties" : {}
+        },
+        "attachGateway" : {
+            "Type" : "AWS::EC2::VPCGatewayAttachment",
+            "Properties" : {
+                "VpcId" : { "Ref" : "vpcEncuesta" },
+                "InternetGatewayId" : { "Ref" : "igEncuesta" }
+            }
+        },
+        "redPublica1a" : {
+            "Type" : "AWS::EC2::Subnet",
+            "Properties" : {
+                "VpcId" : { "Ref" : "vpcEncuesta" },
+                "CidrBlock" : "10.0.200.0/24",
+                "AvailabilityZone" : "us-east-1a",
+                "MapPublicIpOnLaunch": true
+            }
+        },
+        "redPublica1b" : {
+            "Type" : "AWS::EC2::Subnet",
+            "Properties" : {
+                "VpcId" : { "Ref" : "vpcEncuesta" },
+                "CidrBlock" : "10.0.100.0/24",
+                "AvailabilityZone" : "us-east-1b",
+                "MapPublicIpOnLaunch": true
+            }
+        },
+        "redPrivada1c" : {
+            "Type" : "AWS::EC2::Subnet",
+            "Properties" : {
+                "VpcId" : { "Ref" : "vpcEncuesta" },
+                "CidrBlock" : "10.0.2.0/24",
+                "AvailabilityZone" : "us-east-1c"
+            }
+        },
+        "redPrivada1d" : {
+            "Type" : "AWS::EC2::Subnet",
+            "Properties" : {
+                "VpcId" : { "Ref" : "vpcEncuesta" },
+                "CidrBlock" : "10.0.1.0/24",
+                "AvailabilityZone" : "us-east-1d"
+            }
+        },
+        "routeTablePublico" : {
+            "Type" : "AWS::EC2::RouteTable",
+            "Properties" : {
+                "VpcId" : { "Ref" : "vpcEncuesta" }
+            }
+        },
+        "routeTablePrivado" : {
+            "Type" : "AWS::EC2::RouteTable",
+            "Properties" : {
+                "VpcId" : { "Ref" : "vpcEncuesta" }
+            }
+        },
+        "sbRTPublico1" : {
+            "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties" : {
+                "SubnetId" : { "Ref" : "redPublica1a" },
+                "RouteTableId" : { "Ref" : "routeTablePublico" }
+            }
+        },
+        "sbRTPublico2" : {
+            "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties" : {
+                "SubnetId" : { "Ref" : "redPublica1b" },
+                "RouteTableId" : { "Ref" : "routeTablePublico" }
+            }
+        },
+        "sbRTPrivado1" : {
+            "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties" : {
+                "SubnetId" : { "Ref" : "redPrivada1c" },
+                "RouteTableId" : { "Ref" : "routeTablePrivado" }
+            }
+        },
+        "sbRTPrivado2" : {
+            "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties" : {
+                "SubnetId" : { "Ref" : "redPrivada1d" },
+                "RouteTableId" : { "Ref" : "routeTablePrivado" }
+            }
+        },
+        "routeEncuesta" : {
+            "Type" : "AWS::EC2::Route",
+            "DependsOn" : "igEncuesta",
+            "Properties" : {
+                "RouteTableId" : { "Ref" : "routeTablePublico" },
+                "DestinationCidrBlock" : "0.0.0.0/0",
+                "GatewayId" : { "Ref" : "igEncuesta" }
+            }
+        }
+        },
+        "Outputs": {
+            "idVPC": {
+                "Description": "Id VPC",
+                "Value": {
+                    "Ref": "vpcEncuesta"
+                },
+                "Export" : { "Name" : "infraestructura-idVPC" }
+            },
+            "cidrBlockVPC": {
+                "Description": "CIDR block IP VPC",
+                "Value": {
+                    "Fn::GetAtt" : [ "vpcEncuesta", "CidrBlock" ]
+                },
+                "Export" : { "Name" : "infraestructura-cidrBlockVPC" }
+            },
+            "subnetPrivada1c": {
+                "Description": "SubRed Privada 1c",
+                "Value": {
+                    "Ref": "redPrivada1c"
+                },
+                "Export" : { "Name" : "infraestructura-subnetPrivada1c" }
+            },
+            "subnetPrivada1d": {
+                "Description": "SubRed Privada 1d",
+                "Value": {
+                    "Ref" : "redPrivada1d"
+                },
+                "Export" : { "Name" : "infraestructura-subnetPrivada1d" }
+            },
+            "subnetPublica1a": {
+                "Description": "SubRed Publica 1a",
+                "Value": {
+                    "Ref" : "redPublica1a"
+                },
+                "Export" : { "Name" : "infraestructura-subnetPublica1a" }
+            },
+            "subnetPublica1b": {
+                "Description": "SubRed Publica 1b",
+                "Value": {
+                    "Ref" : "redPublica1b"
+                },
+                "Export" : { "Name" : "infraestructura-subnetPublica1b" }
+            }
+        }
+    }

@@ -1,0 +1,35 @@
+<form [formGroup]="formEncuesta" class="normal-form center" (ngSubmit)="onSubmit()">
+    <h2>Nos interesa tu opinión</h2>
+    <mat-grid-list cols="2" rowHeight="300px">
+        <mat-grid-tile>
+            <div class="controles-container">
+                <input type="hidden" formControlName="$key">
+                <mat-form-field>
+                    <input formControlName="nombres" matInput placeholder="Nombres*" >
+                    <mat-error>Este campo es necesario</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <input formControlName="apellidos" matInput placeholder="Apellidos*" >
+                    <mat-error>Este campo es necesario</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <input formControlName="edad" matInput placeholder="Edad*" >
+                    <mat-error>No es una edad válida</mat-error>
+                </mat-form-field>
+                <div class="add-bottom-padding">
+                    <mat-radio-group formControlName="lenguaje" >
+                        <mat-radio-button value="Java">Java</mat-radio-button>
+                        <mat-radio-button value="C">C#</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="controles-container">
+                <div class="button-row">
+                    <button mat-raised-button color="primary" [disabled]="formEncuesta.invalid" type="submit">Votar</button>
+                </div>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+</form>

@@ -1,0 +1,193 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Security Groups",
+    "Metadata": {},
+    "Parameters": {},
+    "Mappings": {},
+    "Conditions": {},
+    "Resources": {
+        "sgRDSEncuesta": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "seguridad para la base de datos",
+                "VpcId": {
+                    "Fn::ImportValue" : "infraestructura-idVPC"
+                },
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "TCP",
+                        "FromPort": "3306",
+                        "ToPort": "3306",
+                        "CidrIp": {
+                            "Fn::ImportValue" : "infraestructura-cidrBlockVPC"
+                        }
+                    }
+                ],
+                "SecurityGroupEgress": [
+                    {
+                        "IpProtocol": "-1",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "sgRDSEncuesta"
+                    }
+                ]
+            }
+        },
+        "sgBastion": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "seguridad para ec2 Bastion",
+                "VpcId": {
+                    "Fn::ImportValue" : "infraestructura-idVPC"
+                },
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "TCP",
+                        "FromPort": "22",
+                        "ToPort": "22",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ],
+                "SecurityGroupEgress": [
+                    {
+                        "IpProtocol": "-1",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "sgBastion"
+                    }
+                ]
+            }
+        },
+        "sgBalanceador": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Expone puerto 80 balanceador",
+                "VpcId": {
+                    "Fn::ImportValue" : "infraestructura-idVPC"
+                },
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "80",
+                        "ToPort": "80",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ],
+                "SecurityGroupEgress": [
+                    {
+                        "IpProtocol": "-1",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "sgBalanceador"
+                    }
+                ]
+            }
+        },
+        "sgApiECS": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Permite trafico del balanceador hacia target groups ecs (viceversa)",
+                "VpcId": {
+                    "Fn::ImportValue" : "infraestructura-idVPC"
+                },
+                "SecurityGroupIngress": [],
+                "SecurityGroupEgress": [
+                    {
+                        "IpProtocol": "-1",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "sgApiECS"
+                    }
+                ]
+            }
+        },
+        "ruleInBalanceadorToTargetsECS": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "Properties": {
+                "Description" : "IN RULE - permite trafico del balanceador a targets groups ecs",
+                "GroupId": {
+                    "Ref": "sgApiECS"
+                },
+                "IpProtocol": "tcp",
+                "FromPort": "32768",
+                "ToPort": "65535",
+                "SourceSecurityGroupId": {
+                    "Ref": "sgBalanceador"
+                }
+            }
+        },
+        "ruleInECSToRDSEncuesta": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "Properties": {
+                "Description" : "IN RULE - permite trafico desde los contenedores hacia mysql",
+                "GroupId": {
+                    "Ref": "sgRDSEncuesta"
+                },
+                "IpProtocol": "tcp",
+                "FromPort": "3306",
+                "ToPort": "3306",
+                "SourceSecurityGroupId": {
+                    "Ref": "sgApiECS"
+                }
+            }
+        }
+    },
+    "Outputs": {
+        "sgRDSEncuesta": {
+            "Description": "Security Group de la base de datos",
+            "Value": {
+                "Fn::GetAtt": [
+                    "sgRDSEncuesta",
+                    "GroupId"
+                ]
+            },
+            "Export" : { "Name" : "infraestructura-sgRDSEncuesta" }
+        },
+        "sgBastion": {
+            "Description": "Security Group de ec2 bastion",
+            "Value": {
+                "Fn::GetAtt": [
+                    "sgBastion",
+                    "GroupId"
+                ]
+            },
+            "Export" : { "Name" : "infraestructura-sgBastion" }
+        },
+        "sgBalanceador": {
+            "Description": "Security Group de ec2 sgBalanceador",
+            "Value": {
+                "Fn::GetAtt": [
+                    "sgBalanceador",
+                    "GroupId"
+                ]
+            },
+            "Export" : { "Name" : "infraestructura-sgBalanceador" }
+        },
+        "sgApiECS": {
+            "Description": "Security Group de ec2 sgApiECS",
+            "Value": {
+                "Fn::GetAtt": [
+                    "sgApiECS",
+                    "GroupId"
+                ]
+            },
+            "Export" : { "Name" : "infraestructura-sgApiECS" }
+        }
+    }
+}

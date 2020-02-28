@@ -1,0 +1,926 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Documentación para el servicio rest del para el proyecto final del curso AWS",
+        "version": "Version 1.0",
+        "title": "Documentación Rest Api Encuesta",
+        "contact": {
+            "name": "@dockerjok",
+            "email": "jocricardo@ids.com.mx"
+        },
+        "license": {}
+    },
+
+    "basePath": "/prod",
+    "schemes": [
+      "https"
+    ],
+    "tags": [
+        {
+            "name": "login-controller",
+            "description": "Login Controller"
+        }
+    ],
+    "paths": {
+        "/api/security/change-password": {
+            "post": {
+                "tags": [
+                    "login-controller"
+                ],
+                "summary": "updatePassword",
+                "operationId": "updatePasswordUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "updatePassword",
+                        "description": "updatePassword",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UpdatePasswordDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/RespuestaApi"
+                        },
+                        "headers": {
+                          "Access-Control-Allow-Origin": {
+                            "type": "string"
+                          }
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "uri": "http://balancerAppEncuestaCf-3137047.us-east-1.elb.amazonaws.com/api/security/change-password",
+                    "responses": {
+                      "default": {
+                        "statusCode": "200",
+                        "responseParameters": {
+                          "method.response.header.Access-Control-Allow-Origin": "'*'"
+                        }
+                      }
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "type": "http_proxy"
+                  }
+            },
+            "options": {
+                "consumes": [
+                  "application/json"
+                ],
+                "responses": {
+                  "200": {
+                    "description": "200 response",
+                    "headers": {
+                      "Access-Control-Allow-Origin": {
+                        "type": "string"
+                      },
+                      "Access-Control-Allow-Methods": {
+                        "type": "string"
+                      },
+                      "Access-Control-Allow-Headers": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "x-amazon-apigateway-integration": {
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
+                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "requestTemplates": {
+                    "application/json": "{\"statusCode\": 200}"
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "type": "mock"
+                }
+              }
+        },
+        "/api/security/first-reset-password": {
+            "post": {
+                "tags": [
+                    "login-controller"
+                ],
+                "summary": "renewPasswordFirst",
+                "operationId": "renewPasswordFirstUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "updatePassword",
+                        "description": "updatePassword",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RenewPasswordFirstDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/RespuestaApi"
+                        },
+                        "headers": {
+                          "Access-Control-Allow-Origin": {
+                            "type": "string"
+                          }
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                  "uri": "http://balancerAppEncuestaCf-3137047.us-east-1.elb.amazonaws.com/api/security/first-reset-password",
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "httpMethod": "POST",
+                  "type": "http_proxy"
+                }
+            },
+            "options": {
+                "consumes": [
+                  "application/json"
+                ],
+                "responses": {
+                  "200": {
+                    "description": "200 response",
+                    "headers": {
+                      "Access-Control-Allow-Origin": {
+                        "type": "string"
+                      },
+                      "Access-Control-Allow-Methods": {
+                        "type": "string"
+                      },
+                      "Access-Control-Allow-Headers": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "x-amazon-apigateway-integration": {
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
+                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "requestTemplates": {
+                    "application/json": "{\"statusCode\": 200}"
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "type": "mock"
+                }
+              }
+        },
+        "/api/security/login": {
+            "post": {
+                "tags": [
+                    "login-controller"
+                ],
+                "summary": "login",
+                "operationId": "loginUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "login",
+                        "description": "login",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/LoginDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/RespuestaApi"
+                        },
+                        "headers": {
+                          "Access-Control-Allow-Origin": {
+                            "type": "string"
+                          }
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                  "uri": "http://balancerAppEncuestaCf-3137047.us-east-1.elb.amazonaws.com/api/security/login",
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "httpMethod": "POST",
+                  "type": "http_proxy"
+                }
+            },
+            "options": {
+                "consumes": [
+                  "application/json"
+                ],
+                "responses": {
+                  "200": {
+                    "description": "200 response",
+                    "headers": {
+                      "Access-Control-Allow-Origin": {
+                        "type": "string"
+                      },
+                      "Access-Control-Allow-Methods": {
+                        "type": "string"
+                      },
+                      "Access-Control-Allow-Headers": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "x-amazon-apigateway-integration": {
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
+                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "requestTemplates": {
+                    "application/json": "{\"statusCode\": 200}"
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "type": "mock"
+                }
+              }
+        },
+        "/api/security/refresh-token": {
+            "post": {
+                "tags": [
+                    "login-controller"
+                ],
+                "summary": "refreshToken",
+                "operationId": "refreshTokenUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "token",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/BasicAccessDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/RespuestaApi"
+                        },
+                        "headers": {
+                          "Access-Control-Allow-Origin": {
+                            "type": "string"
+                          }
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                  "uri": "http://balancerAppEncuestaCf-3137047.us-east-1.elb.amazonaws.com/api/security/refresh-token",
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "httpMethod": "POST",
+                  "type": "http_proxy"
+                }
+            },
+            "options": {
+                "consumes": [
+                  "application/json"
+                ],
+                "responses": {
+                  "200": {
+                    "description": "200 response",
+                    "headers": {
+                      "Access-Control-Allow-Origin": {
+                        "type": "string"
+                      },
+                      "Access-Control-Allow-Methods": {
+                        "type": "string"
+                      },
+                      "Access-Control-Allow-Headers": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "x-amazon-apigateway-integration": {
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
+                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "requestTemplates": {
+                    "application/json": "{\"statusCode\": 200}"
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "type": "mock"
+                }
+              }
+        },
+        "/api/security/signout": {
+            "post": {
+                "tags": [
+                    "login-controller"
+                ],
+                "summary": "signOut",
+                "operationId": "signOutUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "token",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/BasicAccessDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/RespuestaApi"
+                        },
+                        "headers": {
+                          "Access-Control-Allow-Origin": {
+                            "type": "string"
+                          }
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                  "uri": "http://balancerAppEncuestaCf-3137047.us-east-1.elb.amazonaws.com/api/security/signout",
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "httpMethod": "POST",
+                  "type": "http_proxy"
+                }
+            },
+            "options": {
+                "consumes": [
+                  "application/json"
+                ],
+                "responses": {
+                  "200": {
+                    "description": "200 response",
+                    "headers": {
+                      "Access-Control-Allow-Origin": {
+                        "type": "string"
+                      },
+                      "Access-Control-Allow-Methods": {
+                        "type": "string"
+                      },
+                      "Access-Control-Allow-Headers": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "x-amazon-apigateway-integration": {
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
+                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "requestTemplates": {
+                    "application/json": "{\"statusCode\": 200}"
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "type": "mock"
+                }
+              }
+        },
+        "/api/security/token": {
+            "post": {
+                "tags": [
+                    "login-controller"
+                ],
+                "summary": "verificarToken",
+                "operationId": "verificarTokenUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/RespuestaApi"
+                        },
+                        "headers": {
+                          "Access-Control-Allow-Origin": {
+                            "type": "string"
+                          }
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                  "uri": "http://balancerAppEncuestaCf-3137047.us-east-1.elb.amazonaws.com/api/security/token",
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "httpMethod": "POST",
+                  "type": "http_proxy"
+                }
+            },
+            "options": {
+                "consumes": [
+                  "application/json"
+                ],
+                "responses": {
+                  "200": {
+                    "description": "200 response",
+                    "headers": {
+                      "Access-Control-Allow-Origin": {
+                        "type": "string"
+                      },
+                      "Access-Control-Allow-Methods": {
+                        "type": "string"
+                      },
+                      "Access-Control-Allow-Headers": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "x-amazon-apigateway-integration": {
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
+                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "requestTemplates": {
+                    "application/json": "{\"statusCode\": 200}"
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "type": "mock"
+                }
+              }
+        },
+        "/api/encuesta/guardarpersona": {
+            "post": {
+                "tags": [
+                    "encuesta-controller"
+                ],
+                "summary": "guardarPersona",
+                "operationId": "guardarPersonaUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "persona",
+                        "description": "persona",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PersonaInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Respuesta"
+                        },
+                        "headers": {
+                          "Access-Control-Allow-Origin": {
+                            "type": "string"
+                          }
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                  "uri": "http://balancerAppEncuestaCf-3137047.us-east-1.elb.amazonaws.com/api/encuesta/guardarpersona",
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "httpMethod": "POST",
+                  "type": "http_proxy"
+                }
+            },
+            "options": {
+                "consumes": [
+                  "application/json"
+                ],
+                "responses": {
+                  "200": {
+                    "description": "200 response",
+                    "headers": {
+                      "Access-Control-Allow-Origin": {
+                        "type": "string"
+                      },
+                      "Access-Control-Allow-Methods": {
+                        "type": "string"
+                      },
+                      "Access-Control-Allow-Headers": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "x-amazon-apigateway-integration": {
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
+                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "requestTemplates": {
+                    "application/json": "{\"statusCode\": 200}"
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "type": "mock"
+                }
+              }
+        },
+        "/api/encuesta/obtenerpersonas": {
+            "get": {
+              "operationId": "obtenerPersonasUsingGET",
+              "produces": [
+                "application/json"
+              ],
+              "responses": {
+                "200": {
+                  "description": "200 response",
+                  "schema": {
+                    "$ref": "#/definitions/Respuesta"
+                  },
+                  "headers": {
+                    "Access-Control-Allow-Origin": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "401": {
+                  "description": "401 response"
+                },
+                "403": {
+                  "description": "403 response"
+                },
+                "404": {
+                  "description": "404 response"
+                }
+              },
+              "x-amazon-apigateway-integration": {
+                "uri": "http://balancerAppEncuestaCf-3137047.us-east-1.elb.amazonaws.com/api/encuesta/obtenerpersonas",
+                "responses": {
+                  "default": {
+                    "statusCode": "200",
+                    "responseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'"
+                    }
+                  }
+                },
+                "passthroughBehavior": "when_no_match",
+                "httpMethod": "GET",
+                "type": "http_proxy"
+              }
+            },
+            "options": {
+              "consumes": [
+                "application/json"
+              ],
+              "responses": {
+                "200": {
+                  "description": "200 response",
+                  "headers": {
+                    "Access-Control-Allow-Origin": {
+                      "type": "string"
+                    },
+                    "Access-Control-Allow-Methods": {
+                      "type": "string"
+                    },
+                    "Access-Control-Allow-Headers": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "x-amazon-apigateway-integration": {
+                "responses": {
+                  "default": {
+                    "statusCode": "200",
+                    "responseParameters": {
+                      "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                      "method.response.header.Access-Control-Allow-Origin": "'*'"
+                    }
+                  }
+                },
+                "requestTemplates": {
+                  "application/json": "{\"statusCode\": 200}"
+                },
+                "passthroughBehavior": "when_no_match",
+                "type": "mock"
+              }
+            }
+          }
+    },
+    "definitions": {
+        "BasicAccessDTO": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "LoginDTO": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "RenewPasswordFirstDTO": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "session": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "RespuestaApi": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "type": "string"
+                },
+                "body": {
+                    "type": "object"
+                },
+                "idToken": {
+                    "type": "string"
+                },
+                "refreshToken": {
+                    "type": "string"
+                },
+                "sessionId": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "UpdatePasswordDTO": {
+            "type": "object",
+            "properties": {
+                "newPassword": {
+                    "type": "string"
+                },
+                "oldPassword": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "verificationCode": {
+                    "type": "string"
+                }
+            }
+        },
+        "Respuesta": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "PersonaInput": {
+            "type": "object",
+            "properties": {
+                "idpersona": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "nombres": {
+                    "type": "string"
+                },
+                "apellidos": {
+                    "type": "string"
+                },
+                "edad":{
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "lenguaje": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

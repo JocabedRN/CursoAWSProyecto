@@ -1,0 +1,14 @@
+server:
+  port: 8080
+  
+awsregion: us-east-1
+
+userPoolId: us-east-1_vraKu8Ycp
+clientId: 6p5f03cdksugff57ouc39053uf
+
+spring:
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true

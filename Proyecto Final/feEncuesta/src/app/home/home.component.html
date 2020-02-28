@@ -1,0 +1,16 @@
+<div class="example-container">
+    <mat-toolbar color="primary">
+      <h1>Encuesta</h1>
+      <div class="right">
+        <button routerLink="/logout">
+          <span>Cerrar Sesión</span>
+        </button>
+      </div>
+    </mat-toolbar>
+  
+    <mat-sidenav-container>
+      <mat-sidenav-content>
+        <router-outlet></router-outlet>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>

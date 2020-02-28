@@ -1,0 +1,24 @@
+
+server:
+  port: 8080
+  
+awsregion: ${awsregion}
+
+userPoolId: ${userPoolId}
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      ddl-auto: none
+  datasource:
+    url: jdbc:mysql://${host}:${port}/${database}?useUnicode=true&characterEncoding=utf8&useSSL=false&requireSSL=false
+    username: ${username}
+    password: ${password}
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true

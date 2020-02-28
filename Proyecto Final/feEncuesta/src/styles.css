@@ -1,0 +1,14 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+.center {
+    width: 40%;
+    margin: 10px auto;
+}
+
+.right {
+    margin-left: auto;
+}
+
+.mat-header-cell {
+    padding: 10px 15px !important;
+}

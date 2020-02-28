@@ -1,0 +1,53 @@
+version: '3.4'
+
+services:
+  encuesta:
+    build: encuesta/
+    image: dockerjok/apiencuesta:latest
+    environment: 
+      - JAVA_OPTS=""
+      - userPoolId=us-east-1_vraKu8Ycp
+      - host=database-2.cpxrg65hvhks.us-east-1.rds.amazonaws.com
+      - port=3306
+      - database=encuesta
+      - username=root
+      - password=12345678
+      - awsregion=us-east-1
+    ports:
+      - "9000:8080"
+    restart: on-failure
+    networks:
+      - backend
+
+  login:
+    build: login/
+    image: dockerjok/apilogin:latest
+    environment: 
+      - userPoolId=us-east-1_vraKu8Ycp
+      - clientId=6p5f03cdksugff57ouc39053uf
+      - awsregion=us-east-1
+      - AWS_ACCESS_KEY_ID=AKIAWYUEVS7W3JSAK7YN
+      - AWS_SECRET_ACCESS_KEY=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
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    networks:
+      - backend
+
+  proxy:
+    build: nginx/
+    image: dockerjok/nginx_test:latest
+    ports:
+      - "80:80"
+    depends_on: 
+      - encuesta
+      - login
+    restart: always
+    networks:
+      - backend
+
+volumes:
+  my-data:
+
+networks:
+  backend: 

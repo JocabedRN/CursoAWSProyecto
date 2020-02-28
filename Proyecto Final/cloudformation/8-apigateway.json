@@ -1,0 +1,79 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "ApiGateway para balanceador app",
+    "Metadata": {},
+    "Parameters": {
+        "bucketApiGateway": {
+            "Type": "String",
+            "Description": "bucket s3 donde se aloja el archivo body del apigateway",
+            "Default": "apigateway-api-encuesta"
+        },
+        "fileIntoBucketApiGateway": {
+            "Type": "String",
+            "Description": "archivo dentro del bucket s3 donde se aloja el archivo open api del apigateway",
+            "Default" : "8-apigatewaydef.json"
+        },
+        "versionStage": {
+            "Type": "String",
+            "Description": "nombre del stage - version asociado al archivo json",
+            "Default" : "prod"
+        }
+    },
+    "Mappings": {},
+    "Conditions": {},
+    "Resources": {
+        "encuestaApi": {
+            "Type": "AWS::ApiGateway::RestApi",
+            "Properties": {
+                "Name": "Encuesta Api",
+                "Description": "API usada  requests",
+                "FailOnWarnings": true,
+                "BodyS3Location": {
+                    "Bucket": {
+                        "Ref": "bucketApiGateway"
+                    },
+                    "Key": { "Ref": "fileIntoBucketApiGateway" }
+                }
+            }
+        },
+        "deploymentEncuestaApi": {
+            "Type": "AWS::ApiGateway::Deployment",
+            "Properties": {
+                "RestApiId": {
+                    "Ref": "encuestaApi"
+                },
+                "Description": "Implementación del api"
+            }
+        },
+        "prodStage": {
+            "Type": "AWS::ApiGateway::Stage",
+            "Properties": {
+                "StageName": { "Ref": "versionStage" },
+                "Description": "descripcion del stage",
+                "RestApiId": {
+                    "Ref": "encuestaApi"
+                },
+                "DeploymentId": {
+                    "Ref": "deploymentEncuestaApi"
+                }
+            }
+        }
+    },
+    "Outputs": {
+        "encuestaApiURL": {
+            "Description": "DNS API Encuesta",
+            "Value": {
+                "Fn::Join": [
+                    "",
+                    [
+                        "https://",
+                        {"Ref":"encuestaApi"},
+                        ".execute-api.",
+                        {"Ref":"AWS::Region"},
+                        ".amazonaws.com"
+                    ]
+                ]
+            }
+        }
+    }
+}
